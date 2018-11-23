@@ -7,12 +7,12 @@ do
 qdir=`/usr/sbin/postconf -h queue_directory`
 total=`/usr/bin/mailq | /usr/bin/tail -n1 | /usr/bin/gawk  '{print $5}'`
 total=`expr $total + 0`
-incoming=`find /var/spool/postfix/incoming -type f  -regex ".*" | wc -l`
-active=`find /var/spool/postfix/active -type f  -regex ".*" | wc -l`
-deferred=`find /var/spool/postfix/deferred -type f  -regex ".*" | wc -l`
-bounce=`find /var/spool/postfix/bounce -type f  -regex ".*" | wc -l`
-hold=`find /var/spool/postfix/hold -type f  -regex ".*" | wc -l`
-corrupt=`find /var/spool/postfix/corrupt -type f  -regex ".*" | wc -l`
+incoming=`find $qdir/incoming -type f  -regex ".*" | wc -l`
+active=`find $qdir/active -type f  -regex ".*" | wc -l`
+deferred=`find $qdir/deferred -type f  -regex ".*" | wc -l`
+bounce=`find $qdir/bounce -type f  -regex ".*" | wc -l`
+hold=`find $qdir/hold -type f  -regex ".*" | wc -l`
+corrupt=`find $qdir/corrupt -type f  -regex ".*" | wc -l`
 
 echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-total_msg\" interval=$INTERVAL N:$total"
 echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-incoming\" interval=$INTERVAL N:$incoming"
