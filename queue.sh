@@ -1,11 +1,10 @@
 #!/bin/bash
-
 HOSTNAME="${COLLECTD_HOSTNAME:-`hostname -f`}"
 INTERVAL="${COLLECTD_INTERVAL:-10}"
 
 while sleep "$INTERVAL"
 do
-qdir=`postconf -h queue_directory`
+qdir=`/usr/sbin/postconf -h queue_directory`
 total=`/usr/bin/mailq | /usr/bin/tail -n1 | /usr/bin/gawk  '{print $5}'`
 total=`expr $total + 0`
 incoming=`find /var/spool/postfix/incoming -type f  -regex ".*" | wc -l`
@@ -15,12 +14,12 @@ bounce=`find /var/spool/postfix/bounce -type f  -regex ".*" | wc -l`
 hold=`find /var/spool/postfix/hold -type f  -regex ".*" | wc -l`
 corrupt=`find /var/spool/postfix/corrupt -type f  -regex ".*" | wc -l`
 
-echo "PUTVAL $HOSTNAME/postfix/total_msg interval=$INTERVAL N:$total"
-echo "PUTVAL $HOSTNAME/postfix/incoming interval=$INTERVAL N:$incoming"
-echo "PUTVAL $HOSTNAME/postfix/active interval=$INTERVAL N:$active"
-echo "PUTVAL $HOSTNAME/postfix/deferred interval=$INTERVAL N:$deferred"
-echo "PUTVAL $HOSTNAME/postfix/bounce interval=$INTERVAL N:$bounce"
-echo "PUTVAL $HOSTNAME/postfix/hold interval=$INTERVAL N:$hold"
-echo "PUTVAL $HOSTNAME/postfix/corrupt interval=$INTERVAL N:$corrupt"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-total_msg\" interval=$INTERVAL N:$total"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-incoming\" interval=$INTERVAL N:$incoming"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-active\" interval=$INTERVAL N:$active"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-deferred\" interval=$INTERVAL N:$deferred"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-bounce\" interval=$INTERVAL N:$bounce"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-hold\" interval=$INTERVAL N:$hold"
+echo "PUTVAL \"$HOSTNAME/exec-postfix/gauge-corrupt\" interval=$INTERVAL N:$corrupt"
 
 done
