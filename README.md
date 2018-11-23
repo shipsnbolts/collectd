@@ -1,6 +1,6 @@
 # Postfix queue length monitor for collectd
 
-To install:
+To install, install gawk (yum install gawk or apt install gawk):
 <pre>
 Create <b>/etc/collectd/queue.sh</b> and make it executable
 </pre>
